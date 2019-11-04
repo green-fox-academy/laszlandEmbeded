@@ -15,21 +15,20 @@ int main(void)
     /* Replace with your application code */
 	
 	DDRB = 1 << 5;
-	uint8_t flag = 0;
+	uint8_t counter = 0;
+	PORTB = 0 << 5;
 	
     while (1) 
     {
-		
-		if (flag) {
-			PORTB = 1 << 5;
+	
+		if (!(PINB & (1 << PINB7))) {
 			_delay_ms(300);
-			PORTB = 0 << 5;
-			_delay_ms(300);
-		} else {
-			if (!(PINB & (1 << PINB7))) {
-				flag = 1;
-			}
+			counter++;
 		}
-    }
+		
+		if (counter == 5) {
+			PORTB = 1 << 5;
+		}
+	}
 }
 
