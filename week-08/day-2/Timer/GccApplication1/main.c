@@ -23,6 +23,9 @@ void init()
 int main(void)
 {
 
+	uint8_t counter = 0;
+	const uint8_t cntr_max = 30;
+	
 	// Don't forget to call the init function!
 	init();
 	while (1)
@@ -30,9 +33,16 @@ int main(void)
 		// If TC0 counter overflow occurred (TOV0 flag is set) toggle the LED and write "1" to that flag
 		// (this will clear it, it's confusing, but this is how it works)
 		if (TIFR0 & 0x01) {
-				PINB = 1 << PINB5;
-				TIFR0 |= 0b00000001;
+			counter++;
+			TIFR0 |= 0b00000001;
+		}
+		
+		if (counter >= cntr_max) {
+			PINB = 1 << PINB5;
+			counter = 0;
 		}
 	}
 }
+
+
 
