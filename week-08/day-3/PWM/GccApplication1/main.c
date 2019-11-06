@@ -9,13 +9,22 @@
 #define F_CPU 16000000
 #include <util/delay.h>
 
-void init()
+typedef enum {
+	FAST_PWM,
+	PHASE_CORRECT
+	}timer_type_t;
+
+void init(timer_type_t type)
 {
-	
-	TCCR0A = 0b10000011;    // set fast PWM mode (last 2 bits), 
-	TCCR0B = 0b00000010;    // set fast PWM mode (3. bit), set prescaler 8
-	//OCR0A = 0x7f;
-	DDRD |= 1 << DDRD6;     // PD6 pin set as output
+	TCCR0B = 0b00000010;
+	DDRD |= 1 << DDRD6;
+	switch (type)
+	{
+		case FAST_PWM : TCCR0A = 0b10000011;
+			break;
+		case PHASE_CORRECT : TCCR0A = 0b10000001;
+			break;
+}
 }
 
 void set_duty(uint8_t duty)
@@ -28,7 +37,7 @@ int main(void)
 {
     /* Replace with your application code */
 	uint8_t duty = 0;
-	init();
+	init(PHASE_CORRECT);
 	
     while (1) 
     {
