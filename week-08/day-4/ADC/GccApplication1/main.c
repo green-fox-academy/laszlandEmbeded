@@ -32,8 +32,8 @@ void timer0_init(pwm_t type)
 void init()
 {
 	ADMUX |= 1 << 5;		// left adjusted result
-	ADCSRA |= 0b11100000;
-	ADCSRB |= 0;
+	ADCSRA |= 0b11100011;
+	ADCSRB = 0;
 }
 
 void set_duty(uint8_t duty_byte)
@@ -46,7 +46,7 @@ int main(void)
 {
     /* Replace with your application code */
 	
-	timer0_init(PHASE_CORRECT);
+	timer0_init(FAST_PWM);
 	init();
 	
 	uint8_t result1;
